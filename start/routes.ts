@@ -20,6 +20,10 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', async () => {
-  return { hello: 'world' }
-})
+Route.get('/', 'HomeController.index');
+
+
+// Route.group(() => {
+//   Route.get('cart', 'CartController.index')
+//   Route.put('cart', 'CartController.update')
+// }).namespace('App/Modules/Checkout')

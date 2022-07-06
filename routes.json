@@ -1,0 +1,100 @@
+{
+  "root": [
+    {
+      "domain": "root",
+      "name": "drive.local.serve",
+      "pattern": "/uploads/*",
+      "methods": [
+        "GET",
+        "HEAD"
+      ],
+      "handler": "Closure",
+      "middleware": []
+    },
+    {
+      "domain": "root",
+      "name": "",
+      "pattern": "/users",
+      "methods": [
+        "GET",
+        "HEAD"
+      ],
+      "handler": "UserController.index",
+      "middleware": []
+    },
+    {
+      "domain": "root",
+      "name": "",
+      "pattern": "/users",
+      "methods": [
+        "POST"
+      ],
+      "handler": "UserController.store",
+      "middleware": []
+    },
+    {
+      "domain": "root",
+      "name": "",
+      "pattern": "/projects",
+      "methods": [
+        "POST"
+      ],
+      "handler": "Closure",
+      "middleware": []
+    },
+    {
+      "domain": "root",
+      "name": "",
+      "pattern": "/projects/:id",
+      "methods": [
+        "GET",
+        "HEAD"
+      ],
+      "handler": "Closure",
+      "middleware": []
+    },
+    {
+      "domain": "root",
+      "name": "",
+      "pattern": "/plannings",
+      "methods": [
+        "GET",
+        "HEAD"
+      ],
+      "handler": "ProjectsController.index",
+      "middleware": []
+    },
+    {
+      "domain": "root",
+      "name": "",
+      "pattern": "/plannings/:id",
+      "methods": [
+        "GET",
+        "HEAD"
+      ],
+      "handler": "Closure",
+      "middleware": []
+    },
+    {
+      "domain": "root",
+      "name": "",
+      "pattern": "/users-Projects",
+      "methods": [
+        "POST"
+      ],
+      "handler": "Closure",
+      "middleware": []
+    },
+    {
+      "domain": "root",
+      "name": "",
+      "pattern": "/users-Projects/:id",
+      "methods": [
+        "GET",
+        "HEAD"
+      ],
+      "handler": "Closure",
+      "middleware": []
+    }
+  ]
+}

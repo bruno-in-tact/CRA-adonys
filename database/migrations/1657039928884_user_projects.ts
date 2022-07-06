@@ -6,7 +6,10 @@ export default class UserProjects extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.timestamps(true)
+      table.integer('user_id').unsigned().notNullable().references('id').inTable('users')
+      table.integer('project_id').unsigned().notNullable().references('id').inTable('projects')
+      table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(this.now())
+      table.timestamp('updated_at', { useTz: true })
     })
   }
 

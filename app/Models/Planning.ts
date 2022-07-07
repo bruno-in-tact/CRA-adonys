@@ -1,28 +1,24 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import UserProjects from 'Database/migrations/1657039928884_user_projects'
 
 export default class Planning extends BaseModel {
   @column({ isPrimary: true })
   public id: number
-  // a vérifier
-  @hasMany(() => UserProjects)
-  public posts: HasMany<typeof UserProjects>
-
   @column()
-  public day_date: DateTime 
-
+  public dayDate: DateTime 
   @column()
-  public day_quantity: number | null
-
+  public day_quantity: number
+  @column()
+  public isDeleted?: boolean
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
-
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  // a vérifier
+  @manyToMany(() => UserProjects)
+  public user_projects: manyToMany<typeof UserProjects>
 }
 
 
-
-// table.dateTime('day_date')
-// table.float('day_quantity').nullable

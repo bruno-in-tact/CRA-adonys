@@ -5,23 +5,21 @@ import User from './User'
 export default class Token extends BaseModel {
   @column({ isPrimary: true })
   public id: number
+  @column()
+  public type: string
+  @column()
+  public token: string
+  @column()
+  public expiresAt: DateTime
+  @column()
+  public counToken: number
+  @column.dateTime({ autoCreate: true })
+  public createdAt: DateTime
+  
   //relation ship,
   @hasOne(() => User)
   public profile: HasOne<typeof User>
 
-  @column()
-  public token: string
-  @column()
-  public expires_at: DateTime
-  @column()
-  public count_token: number
-  
-
-  @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
-
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
 }
 
 

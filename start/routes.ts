@@ -22,6 +22,48 @@ import { typeHttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import Route from '@ioc:Adonis/Core/Route'
 
 
-Route.resource('/users', 'UserController')
+
+// Route.resource('/users', 'UserController')
 
 
+Route.group(()=> {
+
+    Route.group(() => {
+        Route.post('/new', 'UserController.new')
+        Route.get('/index', 'UserController.index')
+        Route.get('/:id', 'UserController.find')
+        Route.put('/update/:id', 'UserController.update')
+        Route.delete('/delete/:id', 'UserController.softDelete')
+    }).prefix('/users')
+
+
+    Route.group(() => {
+        Route.post('/', 'ProjectsController')
+        Route.get('/:id', 'ProjectsController')
+    }).prefix('/projects')
+
+
+    Route.group(() => {
+        Route.post('/', 'PlanningsController')
+        Route.get('/:id', 'PlanningsController')
+    }).prefix('/plannings')
+
+
+    Route.group(() => {
+        Route.post('/', 'UserProjectsController')
+        Route.get('/:id', 'UserProjectsController')
+    }).prefix('/users-Projects')
+
+}).prefix('/api')
+
+
+
+
+
+// user
+// Route.post('login', async ({ auth, request }) => {
+//     const email = request.input('email')
+//     const password = request.input('password')
+  
+//     await auth.use('web').attempt(email, password)
+//   })

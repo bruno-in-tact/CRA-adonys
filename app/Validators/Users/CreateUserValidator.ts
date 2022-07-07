@@ -1,5 +1,6 @@
 import { schema, CustomMessages, rules, validator } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { Runner } from '@japa/runner'
 
 export default class CreateUserValidator {
   constructor(protected ctx: HttpContextContract) {}
@@ -23,24 +24,19 @@ export default class CreateUserValidator {
    *     ])
    *    ```
    */
-  public user = schema.create({
+  public schema = schema.create({
 
-    first_name: schema.string({trim: true }, [ rules.regex(/^[a-zA-Z0-9-_]+$/),]),
-    last_name: schema.string({trim: true }, [rules.regex(/^[a-zA-Z0-9-_]+$/),]),
-    email:schema.string({trim: true }, [ rules.unique({table :'users', column :'email'})]),
-    password:schema.string({}, [rules.minLength(6)])
+    first_name: schema.string({trim: true }, [ rules.regex(/^[a-zA-Z]+$/),]),
+    last_name: schema.string({trim: true }, [rules.regex(/^[a-zA-Z]+$/),]),
+    email:schema.string({trim: true }, [rules.email(), rules.unique({table :'users', column :'email'})]),
+    password:schema.string({trim: true}, [rules.minLength(6),rules.regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/)],),
+    start_date:schema.string(),
+    remember_me_token:schema.string.optional(),
+    town:schema.string.optional({trim: true }, [ rules.regex(/^[a-zA-Z]+$/),]),
+    country:schema.string.optional({trim: true }, [ rules.regex(/^[a-zA-Z]+$/),]),
 
   })
 
-
-  // "first_name" : "Thomas",
-  // "last_name" : "Durand",
-  // "email" : "tdzdzdt@notintact.fr",
-  // "password" : "azerty",
-  // "start_date" : "2021-04-12",
-  // "remember_me_token" : "hello",
-  // "town" : "Paris",
-  // "country" : "France"
   /**
    * Custom messages for validation failures. You can make use of dot notation `(.)`
    * for targeting nested fields and array expressions `(*)` for targeting all
@@ -52,5 +48,20 @@ export default class CreateUserValidator {
    * }
    *
    */
-  public messages: CustomMessages = {}
-}
+
+  public messages = {
+    '*': (field,rule, arrayExpressionPointer, options) => {
+      return `${field} failed ${rule} validation`
+    }
+  }
+
+//   public messages: CustomMessages = {
+//      minLength: '{{field}} must be at least {{options.minLength}} characters long',
+//      maxLength: '{{field}} must be at least {{options.minLength}} characters long',
+//     'first_name.required' : 'First name is required and only alphabatical letter are accepted',
+//     'last_name.required' : 'Last name is required and only alphabatical letter are accepted',
+//     'email.required' : 'Email is required, and must be of format email',
+//     'password.required' : 'Passwords should have at least 8 characters and contain a digit (e.g. 0-9), a lowercase character (e.g. a-z) and an uppercase character',
+
+//   }
+// }

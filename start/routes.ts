@@ -21,6 +21,7 @@ import { typeHttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 
 import Route from '@ioc:Adonis/Core/Route'
 
+import CreateUser from 'App/Validators/Users/CreateUserValidator'
 
 
 // Route.resource('/users', 'UserController')

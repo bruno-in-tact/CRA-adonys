@@ -2,6 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import CreateUser from 'App/Validators/Users/CreateUserValidator'
 
 import User from 'App/Models/User'
+import CreateUserValidator from 'App/Validators/Users/CreateUserValidator'
 
 export default class UserController {
   public async index({ }: HttpContextContract) {
@@ -15,19 +16,19 @@ export default class UserController {
     }
   }
 
-  public async new({ request}: HttpContextContract) {
+  public async new({ request, response}: HttpContextContract) {
 
     try {
-      const userPayLoad = await request.validate(CreateUser)
-      const body = request.body()
+      const userPayLoad = await request.validate(CreateUserValidator)
       const user = await User.create(userPayLoad)
+      console.log(userPayLoad)
       
-      return {
-        message :'User has been created',
-        data: user,
-      }
+      return response.json({user})
+      
     } catch (error) {
       console.log(error)
+      response.badRequest(error.messages)
+
     }
   }
 

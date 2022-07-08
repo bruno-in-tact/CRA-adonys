@@ -11,6 +11,7 @@ export default class Plannings extends BaseSchema {
       table.dateTime('day_date').notNullable()
       table.float('day_quantity').notNullable()
       table.boolean('is_deleted').nullable().defaultTo(false)
+      table.timestamp('deleted_at', { useTz: true }).nullable()
       table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(this.now())
       table.timestamp('updated_at', { useTz: true })
     })

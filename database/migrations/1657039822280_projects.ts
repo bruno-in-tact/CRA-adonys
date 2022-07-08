@@ -12,6 +12,7 @@ export default class Projects extends BaseSchema {
       table.string('project_details').nullable()
       table.boolean('restaurant_ticket').notNullable()
       table.boolean('is_deleted').nullable().defaultTo(false)
+      table.timestamp('deleted_at', { useTz: true }).nullable()
       table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(this.now())
       table.timestamp('updated_at', { useTz: true })
     })

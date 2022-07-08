@@ -1,73 +1,100 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import CreateUser from 'App/Validators/Users/CreateUserValidator'
 
 import User from 'App/Models/User'
 import CreateUserValidator from 'App/Validators/Users/CreateUserValidator'
+import UpdateUserValidator from 'App/Validators/Users/UpdateUserValidator'
+
+
+
+
 
 export default class UserController {
+
+  /*
+   * index = GET ALL
+   * Params: no
+   */
   public async index({ }: HttpContextContract) {
-    try {
-      const users = await User.all()
-      return users
+    const users = await User.all()
+    return users
 
-    } catch (error) {
-      console.log(error)
-
-    }
   }
 
-  public async new({ request, response}: HttpContextContract) {
+  /*
+ * new =  create a new user
+ * Params: request, response
+ */
+  public async new({ request, response }: HttpContextContract) {
 
-    try {
-      const userPayLoad = await request.validate(CreateUserValidator)
-      const user = await User.create(userPayLoad)
-      console.log(userPayLoad)
-      
-      return response.json({user})
-      
-    } catch (error) {
-      console.log(error)
-      response.badRequest(error.messages)
+    const userPayLoad = await request.validate(CreateUserValidator)
+    const user = await User.create(userPayLoad)
+    console.log(userPayLoad)
 
-    }
+    return response.json({ user })
+
   }
 
-
-  public async find({ params }: HttpContextContract) {
-    try {
-      const user = await User.find(params.id)
-      // SQL: SELECT * from "users" WHERE "id" = 1 LIMIT 1;
-      return user
-
-    } catch (error) {
-      console.log(error)
-    }
+  /**
+    * FIND user by ID
+    * Find User /users/:id
+    */
+  public async find({ params, response }: HttpContextContract) {
+    const user = await User.find(params.id);
+    return user
   }
-
   public async show({ params }: HttpContextContract) {
-    try {
-      const user = await User.findOrFail(params.id)
-      return user
-
-    } catch (error) {
-      console.log(error)
-    }
+    const user = await User.findOrFail(params.id)
+    return user
   }
 
-  public async update({ request, params}: HttpContextContract) {
+  /*
+   * update =  update by id
+   * Params: request, response
+   */
+  public async update({ request, params, response, }: HttpContextContract) {
+    const user = await User.findOrFail(params.id)
 
-    try {
-      const updateData = request.all()
-      const user = await User.findOrFail(params.id)
-      user.merge(updateData)
-      await user.save()
-      return user
+    user.merge(await request.validate(UpdateUserValidator))
+    user.save()
 
-    } catch (error) {
-      console.log(error)
+    return user
 
-    }
+  }
+  /**
+ * Update user to isDeleted=true
+ * Update User /users/soft-delete/:id
+ */
+
+  public async softDelete({ params }: HttpContextContract) {
+    const user = await User.findOrFail(params.id)
+    user.isDeleted = true
+    await user.save()
+
+    return user
   }
 
-  public async softDelete({ }: HttpContextContract) { }
+  /**
+   * Update user to Admin by id
+   * Update Admin /users/setAdmin/:id
+   */
+  public async setToAdmin({ params }: HttpContextContract) {
+    const user = await User.findOrFail(params.id)
+    user.isAdmin = true
+    await user.save()
+
+    return user
+  }
+
+  /**
+ * DELETE user 
+ * DELETE User /users/delete/:id
+ */
+  public async destroy({ params }: HttpContextContract) {
+    const user = await User.findOrFail(params.id)
+    await user.delete()
+
+    return user
+  }
 }
+
+

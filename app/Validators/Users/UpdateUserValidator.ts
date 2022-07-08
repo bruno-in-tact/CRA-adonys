@@ -1,8 +1,7 @@
 import { schema, CustomMessages, rules, validator } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { Runner } from '@japa/runner'
 
-export default class CreateUserValidator {
+export default class UpdateUserValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   /*
@@ -24,17 +23,19 @@ export default class CreateUserValidator {
    *     ])
    *    ```
    */
-  public schema = schema.create({
+ 
+public schema = schema.create({
 
-    first_name: schema.string({trim: true }, [ rules.regex(/^[a-zA-Z]+$/),]),
-    last_name: schema.string({trim: true }, [rules.regex(/^[a-zA-Z]+$/),]),
-    email:schema.string({trim: true }, [rules.email(), rules.unique({table :'users', column :'email'})]),
-    password:schema.string({trim: true}, [rules.minLength(6),rules.regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/)],),
-    start_date:schema.string(),
+    first_name: schema.string.optional({trim: true }, [ rules.regex(/^[a-zA-Z]+$/),]),
+    last_name: schema.string.optional({trim: true }, [rules.regex(/^[a-zA-Z]+$/),]),
+    email:schema.string.optional({trim: true }, [rules.email(), rules.unique({table :'users', column :'email'})]),
+    password:schema.string.optional({trim: true}, [rules.minLength(6),rules.regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/)],),
+    start_date:schema.string.optional(),
     remember_me_token:schema.string.optional(),
     town:schema.string.optional({trim: true }, [ rules.regex(/^[a-zA-Z]+$/),]),
     country:schema.string.optional({trim: true }, [ rules.regex(/^[a-zA-Z]+$/),]),
   })
+  
 
   /**
    * Custom messages for validation failures. You can make use of dot notation `(.)`

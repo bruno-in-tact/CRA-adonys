@@ -34,7 +34,10 @@ Route.group(()=> {
         Route.get('/index', 'UserController.index')
         Route.get('/:id', 'UserController.find')
         Route.put('/update/:id', 'UserController.update')
-        Route.delete('/delete/:id', 'UserController.softDelete')
+        Route.put('/setAdmin/:id', 'UserController.setToAdmin')
+        Route.delete('/soft-delete/:id', 'UserController.softDelete')
+        Route.delete('/delete/:id', 'UserController.destroy')
+
     }).prefix('/users')
 
 

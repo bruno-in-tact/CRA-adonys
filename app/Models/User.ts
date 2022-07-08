@@ -1,35 +1,52 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, beforeSave, manyToMany} from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, beforeSave, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import Hash from '@ioc:Adonis/Core/Hash'
 import Logger from '@ioc:Adonis/Core/Logger'
 import Project from './Project'
 
 
 export default class User extends BaseModel {
+  static withTrashed() {
+    throw new Error('Method not implemented.')
+  }
   @column({ isPrimary: true })
   public id: number
+
   @column()
   public firstName: string
+
   @column()
   public lastName: string
-  @column()
-  public isAdmin: string
+
+  @column({ serializeAs: null })
+  public isAdmin: boolean
+
   @column({ serializeAs: null })
   public password: string
+
   @column()
   public email: string;
+
   @column()
   public rememberMeToken?: string;
+
   @column()
   public town?: string
+
   @column()
   public country?: string
+
   @column()
-  public isDeleted?: boolean 
+  public isDeleted?: boolean
+
   @column()
-  public startDate?: DateTime 
+  public startDate?: DateTime
+
   @column()
-  public endDate?: DateTime 
+  public endDate?: DateTime
+
+  @column.dateTime({ columnName: 'deletedAt' })
+  public deletedAt?: DateTime | null
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -40,6 +57,15 @@ export default class User extends BaseModel {
   // à vérifier
   @manyToMany(() => Project)
   public projects: manyToMany<typeof Project>;
+
+
+  // function 
+  public static findNotDeleted(id?: number) {
+    return this.query().where({ id, isDeleted: false }).first();
+  }
+  public static findNotDeletedByEmail(email: string) {
+    return this.query().where({ email, isDeleted: false }).first();
+  }
 
   @beforeSave()
   public static async hashPassword(user: User) {

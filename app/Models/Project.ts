@@ -17,7 +17,8 @@ export default class Project extends BaseModel {
   public restaurantTicket: boolean 
   @column()
   public isDeleted?: boolean   
-
+  @column.dateTime({ columnName: 'deletedAt' })
+  public deletedAt?: DateTime | null
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
   @column.dateTime({ autoCreate: true, autoUpdate: true })

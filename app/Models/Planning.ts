@@ -11,6 +11,8 @@ export default class Planning extends BaseModel {
   public day_quantity: number
   @column()
   public isDeleted?: boolean
+   @column.dateTime({ columnName: 'deletedAt' })
+   public deletedAt?: DateTime | null
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
   @column.dateTime({ autoCreate: true, autoUpdate: true })

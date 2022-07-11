@@ -29,11 +29,16 @@ export default class ExceptionHandler extends HttpExceptionHandler {
     /**
      * Self handle the validation exception
      */
-    if (error.code === 'E_ROW_NOT_FOUND' || error.code ==='E_ROUTE_NOT_FOUND' || error.code ==='ER_NO_DEFAULT_FOR_FIELD' || error.code ===' ER_NO_REFERENCED_ROW_2') 
-   {
+    if (error.code === 'E_ROW_NOT_FOUND' || error.code === 'E_ROUTE_NOT_FOUND' || error.code === 'ER_NO_DEFAULT_FOR_FIELD') {
       const message = 'error 404 not found please verify your input'
-      return ctx.response.status(404).send(error.messages)
+      return ctx.response.status(404).send(error.messages, message)
     }
+
+    if (error.code === ' ER_NO_REFERENCED_ROW_2' || error.code === 'E_VALIDATION_FAILURE') {
+      const message = 'error 500 '
+      return ctx.response.status(500).send(error.messages, message)
+    }
+
 
     /**
      * Forward rest of the exceptions to the parent class

@@ -21,7 +21,7 @@ export default class UserProject extends BaseModel {
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
-  
+
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
@@ -32,4 +32,8 @@ export default class UserProject extends BaseModel {
     // a vérifier
     @manyToMany(() => User)
     public users: manyToMany<typeof User>
+
+    public static findAllNotDeleted() {
+      return this.query().where({  isDeleted: false });
+    }
 }

@@ -1,4 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import UnAuthorizedException from 'App/Exceptions/UnAuthorizedException'
 import UserProject from 'App/Models/UserProject'
 import CreateUserProjectValidator from 'App/Validators/UsersProjects/CreateUserProjectValidator'
 import UpdateUserProjectValidator from 'App/Validators/UsersProjects/UpdateUserProjectValidator'
@@ -14,73 +15,75 @@ export default class UserProjectsController {
 
   }
 
+
+    /*
+ * allNotDeleted =  find all usersProject not soft deleted
+ * Params: none
+ *  GET : userProject/get
+ */
+    public async getAllNotDeleted({ }: HttpContextContract) {
+      const allNotDeleted = await UserProject.findAllNotDeleted()
+      return allNotDeleted
+    }
   /*
- * new =  create a new user
+ * new =  create a new userProject
  * Params: request, response
  */
   public async new({ request }: HttpContextContract) {
+
     const userProjectPayLoad = await request.validate(CreateUserProjectValidator)
-    const user = await UserProject.create(userProjectPayLoad)
+    const userProject = await UserProject.create(userProjectPayLoad)
+
     console.log(userProjectPayLoad)
 
-    return  user
+    return userProject
+
 
   }
 
   /**
     * FIND user by ID
-    * Find User /users/:id
+    * Find User /userProject/:id
     */
   public async find({ params, response }: HttpContextContract) {
-    const user = await UserProject.find(params.id);
-    return user
+    const userProject = await UserProject.find(params.id);
+    return userProject
   }
   /*
    * update =  update by id
    * Params: request, response
    */
   public async update({ request, params, response, }: HttpContextContract) {
-    const user = await UserProject.findOrFail(params.id)
+    const userProject = await UserProject.findOrFail(params.id)
 
-    user.merge(await request.validate(UpdateUserProjectValidator))
-    user.save()
+    userProject.merge(await request.validate(UpdateUserProjectValidator))
+    userProject.save()
 
-    return user
+    return userProject
 
   }
   /**
  * Update user to isDeleted=true
- * Update User /users/soft-delete/:id
+ * Update User /userProject/soft-delete/:id
  */
 
   public async softDelete({ params }: HttpContextContract) {
-    const user = await UserProject.findOrFail(params.id)
-    user.isDeleted = true
-    await user.save()
+    const userProject = await UserProject.findOrFail(params.id)
+    userProject.isDeleted = true
+    await userProject.save()
 
-    return user
+    return userProject
   }
 
-  /**
-   * Update user to Admin by id
-   * Update Admin /users/setAdmin/:id
-   */
-  public async setToAdmin({ params }: HttpContextContract) {
-    const user = await UserProject.findOrFail(params.id)
-    user.isAdmin = true
-    await user.save()
-
-    return user
-  }
 
   /**
- * DELETE user 
- * DELETE User /users/delete/:id
+ * DELETE userProject 
+ * DELETE User /userProject/delete/:id
  */
   public async destroy({ params }: HttpContextContract) {
-    const user = await UserProject.findOrFail(params.id)
-    await user.delete()
+    const userProject = await UserProject.findOrFail(params.id)
+    await userProject.delete()
 
-    return user
+    return userProject
   }
 }

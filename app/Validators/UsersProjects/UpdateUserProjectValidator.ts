@@ -44,8 +44,6 @@ export default class UpdateUserProjectValidator {
    */
    public messages: CustomMessages = {
     'required': "The field '{{field}}' is required",
-    'email': "The field '{{field}}'  and with a correct format",
-    'password.minLength': "The field '{{field}}' must have atleast 6 character and a Maj letter",
-    'email.unique': "this email adresse is already in use",
+    
   };
 }

@@ -15,6 +15,16 @@ export default class PlanningsController {
 
   }
 
+    /*
+ * allNotDeleted =  find all users not soft deleted
+ * Params: none
+ *  GET : users/get
+ */
+    public async getAllNotDeleted({ }: HttpContextContract) {
+      const allNotDeleted = await Planning.findAllNotDeleted()
+      return allNotDeleted
+    }
+
   /*
  * new =  create a new planning
  * Params: request, response

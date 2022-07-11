@@ -15,6 +15,16 @@ export default class ProjectController {
 
   }
 
+   /*
+ * allNotDeleted =  find all users not soft deleted
+ * Params: none
+ *  GET : users/get
+ */
+   public async getAllNotDeleted({ }: HttpContextContract) {
+    const allNotDeleted = await Project.findAllNotDeleted()
+    return allNotDeleted
+  }
+
   /*
  * new =  create a new userx
  * Params: request, response

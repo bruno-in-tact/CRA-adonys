@@ -63,6 +63,9 @@ export default class User extends BaseModel {
   public static findNotDeleted(id?: number) {
     return this.query().where({ id, isDeleted: false }).first();
   }
+  public static findAllNotDeleted() {
+    return this.query().where({  isDeleted: false });
+  }
   public static findNotDeletedByEmail(email: string) {
     return this.query().where({ email, isDeleted: false }).first();
   }

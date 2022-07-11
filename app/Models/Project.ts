@@ -11,22 +11,22 @@ export default class Project extends BaseModel {
   public id: number
 
   @column()
-  public projectName: string  
+  public projectName: string
 
   @column()
-  public projectKey: string  
+  public projectKey: string
 
   @column()
-  public clientName: string  
+  public clientName: string
 
   @column()
-  public projectDetails?: string  
+  public projectDetails?: string
 
   @column()
-  public restaurantTicket: boolean 
+  public restaurantTicket: boolean
 
   @column()
-  public isDeleted?: boolean   
+  public isDeleted?: boolean
 
   @column.dateTime({ columnName: 'deletedAt' })
   public deletedAt?: DateTime | null
@@ -43,4 +43,9 @@ export default class Project extends BaseModel {
 
   public static findNotDeleted(id?: number) {
     return this.query().where({ id, isDeleted: false }).first();
-  }}
+  }
+  public static findAllNotDeleted() {
+    return this.query().where({ isDeleted: false });
+  }
+}
+

@@ -7,13 +7,23 @@ import UpdateUserValidator from 'App/Validators/Users/UpdateUserValidator'
 export default class UserController {
 
   /*
-   * index = GET ALL
-   * Params: no
-   */
+* userNotDeleted =  find all users even deleted
+* Params: none
+*  GET : users/index
+*/
   public async index({ }: HttpContextContract) {
     const users = await User.all()
     return users
+  }
 
+  /*
+ * allNotDeleted =  find all users not soft deleted
+ * Params: none
+ *  GET : users/get
+ */
+  public async getAllNotDeleted({ }: HttpContextContract) {
+    const allNotDeleted = await User.findAllNotDeleted()
+    return allNotDeleted
   }
 
   /*
@@ -25,7 +35,7 @@ export default class UserController {
     const user = await User.create(userPayLoad)
     console.log(userPayLoad)
 
-    return  user
+    return user
 
   }
 

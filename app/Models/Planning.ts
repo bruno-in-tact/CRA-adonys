@@ -23,6 +23,10 @@ export default class Planning extends BaseModel {
   // a vérifier
   @manyToMany(() => UserProjects)
   public user_projects: manyToMany<typeof UserProjects>
+
+  public static findAllNotDeleted() {
+    return this.query().where({  isDeleted: false });
+  }
 }
 
 

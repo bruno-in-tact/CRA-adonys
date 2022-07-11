@@ -4,10 +4,6 @@ import User from 'App/Models/User'
 import CreateUserValidator from 'App/Validators/Users/CreateUserValidator'
 import UpdateUserValidator from 'App/Validators/Users/UpdateUserValidator'
 
-
-
-
-
 export default class UserController {
 
   /*
@@ -24,13 +20,12 @@ export default class UserController {
  * new =  create a new user
  * Params: request, response
  */
-  public async new({ request, response }: HttpContextContract) {
-
+  public async new({ request }: HttpContextContract) {
     const userPayLoad = await request.validate(CreateUserValidator)
     const user = await User.create(userPayLoad)
     console.log(userPayLoad)
 
-    return response.json({ user })
+    return  user
 
   }
 
@@ -42,11 +37,6 @@ export default class UserController {
     const user = await User.find(params.id);
     return user
   }
-  public async show({ params }: HttpContextContract) {
-    const user = await User.findOrFail(params.id)
-    return user
-  }
-
   /*
    * update =  update by id
    * Params: request, response

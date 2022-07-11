@@ -1,9 +1,8 @@
 import { schema, CustomMessages, rules, validator } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { Runner } from '@japa/runner'
-import { Request } from '@adonisjs/core/build/standalone'
 
-export default class CreateUserValidator {
+
+export default class CreatePlanningValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public reporter = validator.reporters.api;
@@ -29,27 +28,16 @@ export default class CreateUserValidator {
    *    ```
    */
   public schema = schema.create({
-
-    first_name: schema.string({ trim: true }, [rules.regex(/^[a-zA-Z]+$/),]),
-    last_name: schema.string({ trim: true }, [rules.regex(/^[a-zA-Z]+$/),]),
-
-    email: schema.string({ trim: true }, [rules.email(), rules.normalizeEmail({
-      allLowercase: true,
-      gmailRemoveDots: false,
-    }), rules.unique({
-      table: 'users', column: 'email', caseInsensitive: true,
-      where: { is_deleted: false },
-    })]),
-    password: schema.string({ trim: true }, [rules.minLength(6)],),
-    start_date: schema.string(),
-    remember_me_token: schema.string.optional(),
-    town: schema.string.optional({ trim: true }, [rules.regex(/^[a-zA-Z]+$/),]),
-    country: schema.string.optional({ trim: true }, [rules.regex(/^[a-zA-Z]+$/),]),
-    is_admin: schema.boolean.optional(),
+    user_project_id:schema.number(),
+    day_date: schema.string(),
+    day_quantity: schema.number(),
 
   })
 
 
+
+
+  
   /**
    * Custom messages for validation failures. You can make use of dot notation `(.)`
    * for targeting nested fields and array expressions `(*)` for targeting all
@@ -65,9 +53,6 @@ export default class CreateUserValidator {
 
   public messages: CustomMessages = {
     'required': "The field '{{field}}' is required",
-    'email': "The field '{{field}}'  and with a correct format",
-    'email.unique': "this email adresse is already in use",
     'rule' : "the field {{field}} only accept letters",
-    'password.minLength': "The field '{{field}}' must have atleast 6 character ",
   };
 }

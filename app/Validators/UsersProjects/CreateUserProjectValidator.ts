@@ -1,8 +1,13 @@
 import { schema, CustomMessages, rules, validator } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { Runner } from '@japa/runner'
+import { Request } from '@adonisjs/core/build/standalone'
 
-export default class UpdateUserValidator {
-    public reporter = validator.reporters.api;
+export default class CreateUserProjectValidator {
+  constructor(protected ctx: HttpContextContract) {}
+
+  public reporter = validator.reporters.api;
+
 
   /*
    * Define schema to validate the "shape", "type", "formatting" and "integrity" of data.
@@ -23,27 +28,11 @@ export default class UpdateUserValidator {
    *     ])
    *    ```
    */
- 
-public schema = schema.create({
-
-    first_name: schema.string.optional({ trim: true }, [rules.regex(/^[a-zA-Z]+$/),]),
-    last_name: schema.string.optional({ trim: true }, [rules.regex(/^[a-zA-Z]+$/),]),
-
-    email: schema.string.optional({ trim: true }, [rules.email(), rules.normalizeEmail({
-      allLowercase: true,
-      gmailRemoveDots: false,
-    }), rules.unique({
-      table: 'users', column: 'email', caseInsensitive: true,
-      where: { is_deleted: false },
-    })]),
-    password: schema.string.optional({ trim: true }, [rules.minLength(6), rules.regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/)],),
-    start_date: schema.string.optional(),
-    remember_me_token: schema.string.optional(),
-    town: schema.string.optional({ trim: true }, [rules.regex(/^[a-zA-Z]+$/),]),
-    country: schema.string.optional({ trim: true }, [rules.regex(/^[a-zA-Z]+$/),]),
-    is_admin: schema.boolean.optional(),
+  public schema = schema.create({
+    user_id: schema.number(),
+    project_id: schema.number(),
   })
-  
+
 
   /**
    * Custom messages for validation failures. You can make use of dot notation `(.)`
@@ -56,10 +45,13 @@ public schema = schema.create({
    * }
    *
    */
-   public messages: CustomMessages = {
+
+
+  public messages: CustomMessages = {
     'required': "The field '{{field}}' is required",
     'email': "The field '{{field}}'  and with a correct format",
-    'password.minLength': "The field '{{field}}' must have atleast 6 character and a Maj letter",
     'email.unique': "this email adresse is already in use",
+    'rule' : "the field {{field}} only accept letters",
+    'password.minLength': "The field '{{field}}' must have atleast 6 character ",
   };
 }

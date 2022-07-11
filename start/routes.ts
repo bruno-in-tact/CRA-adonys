@@ -21,9 +21,6 @@ import { typeHttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 
 import Route from '@ioc:Adonis/Core/Route'
 
-import CreateUser from 'App/Validators/Users/CreateUserValidator'
-
-
 // Route.resource('/users', 'UserController')
 
 
@@ -42,32 +39,37 @@ Route.group(()=> {
 
 
     Route.group(() => {
-        Route.post('/', 'ProjectsController')
-        Route.get('/:id', 'ProjectsController')
+        Route.post('/new', 'ProjectController.new')
+        Route.get('/index', 'ProjectController.index')
+        Route.get('/:id', 'ProjectController.find')
+        Route.put('/update/:id', 'ProjectController.update')
+        Route.put('/setAdmin/:id', 'ProjectController.setToAdmin')
+        Route.delete('/soft-delete/:id', 'ProjectController.softDelete')
+        Route.delete('/delete/:id', 'ProjectController.destroy')
+
     }).prefix('/projects')
 
 
     Route.group(() => {
-        Route.post('/', 'PlanningsController')
-        Route.get('/:id', 'PlanningsController')
+        Route.post('/new', 'PlanningController.new')
+        Route.get('/index', 'PlanningController.index')
+        Route.get('/:id', 'PlanningController.find')
+        Route.put('/update/:id', 'PlanningController.update')
+        Route.put('/setAdmin/:id', 'PlanningController.setToAdmin')
+        Route.delete('/soft-delete/:id', 'PlanningController.softDelete')
+        Route.delete('/delete/:id', 'PlanningController.destroy')
+
     }).prefix('/plannings')
 
 
     Route.group(() => {
-        Route.post('/', 'UserProjectsController')
-        Route.get('/:id', 'UserProjectsController')
-    }).prefix('/users-Projects')
+        Route.post('/new', 'UserProjectsController.new')
+        Route.get('/index', 'UserProjectsController.index')
+        Route.get('/:id', 'UserProjectsController.find')
+        Route.put('/update/:id', 'UserProjectsController.update')
+        Route.delete('/soft-delete/:id', 'UserProjectsController.softDelete')
+        Route.delete('/delete/:id', 'UserProjectsController.destroy')
+
+    }).prefix('/usersProjects')
 
 }).prefix('/api')
-
-
-
-
-
-// user
-// Route.post('login', async ({ auth, request }) => {
-//     const email = request.input('email')
-//     const password = request.input('password')
-  
-//     await auth.use('web').attempt(email, password)
-//   })

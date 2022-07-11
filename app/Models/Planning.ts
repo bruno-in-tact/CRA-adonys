@@ -6,9 +6,11 @@ export default class Planning extends BaseModel {
   @column({ isPrimary: true })
   public id: number
   @column()
-  public dayDate: DateTime 
+  public dayDate: DateTime
   @column()
-  public day_quantity: number
+  public userProjectId: number 
+  @column()
+  public dayQuantity: number
   @column()
   public isDeleted?: boolean
    @column.dateTime({ columnName: 'deletedAt' })

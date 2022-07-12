@@ -20,6 +20,7 @@ import { typeHttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import UserController from 'App/Controllers/Http/UserController';
 
 // Route.resource('/users', 'UserController')
 
@@ -27,7 +28,13 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.group(() => {
 
     Route.group(() => {
-        Route.post('/new', 'UserController.new')
+        Route.post('/new', 'UserController.new') 
+        Route.get('/login', 'SecurityController.login')
+        Route.get('/dologin', 'SecurityController.login')
+
+    }).prefix('/users')
+    
+    Route.group(()=> {
         Route.get('/index', 'UserController.index')
         Route.get('/get', 'UserController.getAllNotDeleted')
         Route.get('/:id', 'UserController.find')
@@ -35,8 +42,7 @@ Route.group(() => {
         Route.put('/setAdmin/:id', 'UserController.setToAdmin')
         Route.delete('/soft-delete/:id', 'UserController.softDelete')
         Route.delete('/delete/:id', 'UserController.destroy')
-
-    }).prefix('/users')
+    }).prefix('/users').middleware('auth')
 
 
     Route.group(() => {

@@ -30,7 +30,9 @@ export default class CreatePlanningValidator {
   public schema = schema.create({
     user_project_id:schema.number(),
     day_date: schema.string(),
-    day_quantity: schema.number(),
+    day_quantity: schema.number( [
+      rules.range(0, 1),
+    ]),
 
   })
 

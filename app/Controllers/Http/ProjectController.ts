@@ -51,7 +51,7 @@ export default class ProjectController {
     * Find project /users/:id
     */
   public async find({ params, response }: HttpContextContract) {
-    const project = await Project.find(params.id);
+    const project = await Project.findNotDeleted(params.id);
     return project
   }
   /*

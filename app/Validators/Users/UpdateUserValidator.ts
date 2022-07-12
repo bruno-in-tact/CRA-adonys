@@ -25,23 +25,23 @@ export default class UpdateUserValidator {
    */
  
 public schema = schema.create({
-
-    first_name: schema.string.optional({ trim: true }, [rules.regex(/^[a-zA-Z]+$/),]),
-    last_name: schema.string.optional({ trim: true }, [rules.regex(/^[a-zA-Z]+$/),]),
-
-    email: schema.string.optional({ trim: true }, [rules.email(), rules.normalizeEmail({
-      allLowercase: true,
-      gmailRemoveDots: false,
-    }), rules.unique({
-      table: 'users', column: 'email', caseInsensitive: true,
-      where: { is_deleted: false },
-    })]),
-    password: schema.string.optional({ trim: true }, [rules.minLength(6), rules.regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/)],),
-    start_date: schema.string.optional(),
-    remember_me_token: schema.string.optional(),
-    town: schema.string.optional({ trim: true }, [rules.regex(/^[a-zA-Z]+$/),]),
-    country: schema.string.optional({ trim: true }, [rules.regex(/^[a-zA-Z]+$/),]),
-    is_admin: schema.boolean.optional(),
+  first_name: schema.string.optional({ trim: true }, [rules.alpha(), rules.escape()]),
+  last_name: schema.string.optional({ trim: true }, [rules.alpha(),rules.escape()]),
+  email: schema.string.optional({ trim: true }, [rules.email(), rules.escape(),
+  rules.normalizeEmail({
+    allLowercase: true,
+    gmailRemoveDots: false,
+  }), 
+  rules.unique({
+    table: 'users', column: 'email', caseInsensitive: true,
+    where: { is_deleted: false },
+  })]),
+  password: schema.string.optional( [rules.minLength(6), rules.escape()],),
+  start_date: schema.string.optional([rules.escape()]),
+  remember_me_token: schema.string.optional([rules.escape()]),
+  town: schema.string.optional({ trim: true }, [rules.alpha(),rules.escape()]),
+  country: schema.string.optional({ trim: true }, [rules.alpha(),rules.escape()]),
+  is_admin: schema.boolean.optional([rules.escape()]),
   })
   
 

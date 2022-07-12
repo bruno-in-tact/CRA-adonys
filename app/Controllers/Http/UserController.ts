@@ -6,6 +6,9 @@ import UpdateUserValidator from 'App/Validators/Users/UpdateUserValidator'
 
 export default class UserController {
 
+
+
+
   /*
 * userNotDeleted =  find all users even deleted
 * Params: none
@@ -39,26 +42,41 @@ export default class UserController {
 
   }
 
+  // public async new({ request, params }: HttpContextContract) {
+  //     await this.handleRequest(params,request)
+  //   return request.body()
+
+  // }
+
+ 
+
   /**
     * FIND user by ID
     * Find User /users/:id
     */
-  public async find({ params, response }: HttpContextContract) {
-    const user = await User.find(params.id);
+
+  public async find({ params }: HttpContextContract) {
+    const user = await User.findNotDeleted(params.id);
     return user
   }
   /*
    * update =  update by id
    * Params: request, response
    */
-  public async update({ request, params, response, }: HttpContextContract) {
-    const user = await User.findOrFail(params.id)
+  // public async update({ request, params, response, }: HttpContextContract) {
+  //   const user = await User.findOrFail(params.id)
 
-    user.merge(await request.validate(UpdateUserValidator))
-    user.save()
+  //   user.merge(await request.validate(UpdateUserValidator))
+  //   user.save()
 
-    return user
+  //   return user
 
+  // }
+
+  public async update({ request, params, }: HttpContextContract) {
+    await this.handleRequest(params,request)
+    return request.body()
+    
   }
   /**
  * Update user to isDeleted=true
@@ -94,6 +112,14 @@ export default class UserController {
     await user.delete()
 
     return user
+  }
+
+  private async handleRequest (params: HttpContextContract ['params'], request: HttpContextContract['request']){
+    const user = params.id ? await User.findOrFail(params.id) : new User();
+    const data =  await request.validate(UpdateUserValidator)
+    user
+        .merge({...data, })
+        .save()
   }
 }
 

@@ -42,15 +42,16 @@ export default class PlanningsController {
     * FIND planning by ID
     * Find Planning /users/:id
     */
-  public async find({ params, response }: HttpContextContract) {
-    const planning = await Planning.find(params.id);
+  public async find({ params }: HttpContextContract) {
+  
+    const planning = await Planning.findNotDeleted(params.id);
     return planning
   }
   /*
    * update =  update by id
    * Params: request, response
    */
-  public async update({ request, params, response, }: HttpContextContract) {
+  public async update({ request, params, }: HttpContextContract) {
     const planning = await Planning.findOrFail(params.id)
 
     planning.merge(await request.validate(UpdatePlanningValidator))

@@ -4,7 +4,7 @@ import { Runner } from '@japa/runner'
 import { Request } from '@adonisjs/core/build/standalone'
 
 export default class CreateUserValidator {
-  constructor(protected ctx: HttpContextContract) {}
+  constructor(protected ctx: HttpContextContract) { }
 
   public reporter = validator.reporters.api;
 
@@ -30,22 +30,25 @@ export default class CreateUserValidator {
    */
   public schema = schema.create({
 
-    first_name: schema.string({ trim: true }, [rules.regex(/^[a-zA-Z]+$/),]),
-    last_name: schema.string({ trim: true }, [rules.regex(/^[a-zA-Z]+$/),]),
+    first_name: schema.string({ trim: true }, [rules.alpha(), rules.escape()]),
+    last_name: schema.string({ trim: true }, [rules.alpha(),rules.escape()]),
 
-    email: schema.string({ trim: true }, [rules.email(), rules.normalizeEmail({
+    email: schema.string({ trim: true }, [rules.email(), rules.escape(),
+    rules.normalizeEmail({
       allLowercase: true,
       gmailRemoveDots: false,
-    }), rules.unique({
+    }), 
+    rules.unique({
       table: 'users', column: 'email', caseInsensitive: true,
       where: { is_deleted: false },
     })]),
-    password: schema.string({ trim: true }, [rules.minLength(6)],),
-    start_date: schema.string(),
-    remember_me_token: schema.string.optional(),
-    town: schema.string.optional({ trim: true }, [rules.regex(/^[a-zA-Z]+$/),]),
-    country: schema.string.optional({ trim: true }, [rules.regex(/^[a-zA-Z]+$/),]),
-    is_admin: schema.boolean.optional(),
+
+    password: schema.string( [rules.minLength(6), rules.escape()],),
+    start_date: schema.string([rules.escape()]),
+    remember_me_token: schema.string.optional([rules.escape()]),
+    town: schema.string.optional({ trim: true }, [rules.alpha(),rules.escape()]),
+    country: schema.string.optional({ trim: true }, [rules.alpha(),rules.escape()]),
+    is_admin: schema.boolean.optional([rules.escape()]),
 
   })
 
@@ -67,7 +70,7 @@ export default class CreateUserValidator {
     'required': "The field '{{field}}' is required",
     'email': "The field '{{field}}'  and with a correct format",
     'email.unique': "this email adresse is already in use",
-    'rule' : "the field {{field}} only accept letters",
+    'rule': "the field {{field}} only accept letters",
     'password.minLength': "The field '{{field}}' must have atleast 6 character ",
   };
 }

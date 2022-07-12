@@ -36,4 +36,7 @@ export default class UserProject extends BaseModel {
     public static findAllNotDeleted() {
       return this.query().where({  isDeleted: false });
     }
+    public static findNotDeleted(id?: number) {
+      return this.query().where({ id, isDeleted: false }).first();
+    }
 }

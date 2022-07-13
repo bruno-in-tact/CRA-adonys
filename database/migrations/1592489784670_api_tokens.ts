@@ -10,6 +10,7 @@ export default class ApiTokens extends BaseSchema {
       table.string('type', 80).notNullable()
       table.string('token', 255).notNullable()
       table.integer('count_token')
+      table.string('name', 255).nullable()
 
 
       /**

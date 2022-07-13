@@ -6,18 +6,21 @@ import UpdateUserProjectValidator from 'App/Validators/UsersProjects/UpdateUserP
 import Project from 'App/Models/Project';
 import User from 'App/Models/User';
 import { MyError } from 'App/Exceptions/MyError'
-import Project from 'App/Models/Project'
 
 export default class UserProjectsController {
   /*
    * index = GET ALL
    * Params: no
    */
-  public async index({ }: HttpContextContract) {
+  public async index({auth, response }: HttpContextContract) {
+    const sessionUser = auth.use('web').user!;
+   
     const usersProjects = await UserProject.all()
     return usersProjects
+    }
 
-  }
+
+  
 
 
   /*
@@ -25,42 +28,43 @@ export default class UserProjectsController {
 * Params: none
 *  GET : userProject/get
 */
-  public async getAllNotDeleted({ }: HttpContextContract) {
+  public async getAllNotDeleted({ auth}: HttpContextContract) {
+    const sessionUser = auth.use('api').user!;
     const allNotDeleted = await UserProject.findAllNotDeleted()
-    return allNotDeleted
+    if (sessionUser){
+      return allNotDeleted
+    }
   }
   /*
  * new =  create a new userProject
  * Params: request, response
  */
-  public async new({ request, params, response }: HttpContextContract) {
-    // const userId = params.userId;
-    // const projectId = params.projectId;
-    // const project = await Project.findNotDeleted(projectId);
-    // const user = await User.findNotDeleted(userId);
-
-    // if (!project) {
-    //   return response.unprocessableEntity({
-    //     errors: [
-    //       {
-    //         field: 'projectId',
-    //         rule: 'exists',
-    //       },
-    //     ],
-    //   });
-    // }
-    // if (!user) {
-    //   return response.unprocessableEntity({
-    //     errors: [
-    //       {
-    //         field: 'user',
-    //         rule: 'exists',
-    //       },
-    //     ],
-    //   });
-    // }
-
+  public async new({ request, response }: HttpContextContract) {
+  
     const userProjectPayLoad = await request.validate(CreateUserProjectValidator)
+    const user = await User.findNotDeleted(request.body().user_id)
+    const project = await Project.findNotDeleted(request.body().project_id)
+    if(!user){
+      return response.unprocessableEntity({
+        errors: [
+          {
+            field: 'user_id',
+            rule: 'exists',
+          },
+        ],
+      });
+    }else{
+      if(!project){
+        return response.unprocessableEntity({
+          errors: [
+            {
+              field: 'project_id',
+              rule: 'exists',
+            },
+          ],
+        });
+    }
+
     const userProject = await UserProject.create(userProjectPayLoad)
     if (!userProject) {
       return response.notFound();
@@ -71,6 +75,7 @@ export default class UserProjectsController {
 
 
   }
+}
 
   /**
     * FIND user by ID
@@ -89,8 +94,11 @@ export default class UserProjectsController {
     const userProject = await UserProject.findNotDeleted(params.id)
     userProject?.merge(await request.validate(UpdateUserProjectValidator))
 
-    const user = await User.find(request.body().user_id)
-    const project = await Project.find(request.body().project_id)
+    const user = await User.findNotDeleted(request.body().user_id)
+    const project = await Project.findNotDeleted(request.body().project_id)
+    if(!userProject){
+      return response.status(404)
+    }
     if (project && user) {
       userProject.save()
     } else if (!project) {

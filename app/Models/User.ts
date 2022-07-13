@@ -15,6 +15,9 @@ export default class User extends BaseModel {
   @column()
   public firstName: string
 
+  // @column()
+  // public uid?: number
+
   @column()
   public lastName: string
 
@@ -81,4 +84,6 @@ export default class User extends BaseModel {
       }
     }
   }
+
+
 }

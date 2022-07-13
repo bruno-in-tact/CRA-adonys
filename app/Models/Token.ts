@@ -8,6 +8,8 @@ export default class Token extends BaseModel {
   @column()
   public type: string
   @column()
+  public name?: string
+  @column()
   public token: string
   @column()
   public expiresAt: DateTime

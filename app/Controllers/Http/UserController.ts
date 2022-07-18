@@ -1,3 +1,4 @@
+import { Response } from '@adonisjs/core/build/standalone'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 import User from 'App/Models/User'
@@ -7,6 +8,14 @@ import UpdateUserValidator from 'App/Validators/Users/UpdateUserValidator'
 export default class UserController {
 
 
+    /*
+* ME =  return auth user
+* Params: none
+* GET : users/me
+*/
+  public async me({ auth, response }) {
+    return response.ok({ user: auth.user })
+  }
 
 
   /*
@@ -27,7 +36,6 @@ export default class UserController {
   public async getAllNotDeleted({auth}: HttpContextContract) {
     const allNotDeleted = await User.findAllNotDeleted()
     await auth.use('api').authenticate()
-
     return allNotDeleted
   }
 
@@ -35,14 +43,11 @@ export default class UserController {
  * new =  create a new user
  * Params: request, response
  */
-  public async new({ request,  }: HttpContextContract) {
+  public async new({ request,response  }: HttpContextContract) {
     const userPayLoad = await request.validate(CreateUserValidator)
-    const user = await User.create(userPayLoad)
-
     console.log(userPayLoad)
-
-    return user
-
+    const user = await User.create(userPayLoad)
+    return response.created({user})
   }
 
   // public async new({ request, params }: HttpContextContract) {
@@ -50,8 +55,6 @@ export default class UserController {
   //   return request.body()
 
   // }
-
- 
 
   /**
     * FIND user by ID
@@ -78,15 +81,26 @@ export default class UserController {
   // }
 
   public async update({ request, params, auth }: HttpContextContract) {
+
     const sessionUser = auth.use('web').user!;
     await this.handleRequest(params,request)
     return request.body()
     
   }
+
+  // public async update({ request, response, auth }: HttpContextContract) {
+    
+  //   const updatePlayLoad = await request.validate(UpdateUserValidator)
+   
+  //   const user = await auth.user!.merge(updatePlayLoad.user).save()
+    
+  //   return response.ok({ user })
+    
+  // }
   /**
  * Update user to isDeleted=true
  * Update User /users/soft-delete/:id
- */
+ */ 
 
   public async softDelete({ params }: HttpContextContract) {
     const user = await User.findOrFail(params.id)

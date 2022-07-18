@@ -30,27 +30,31 @@ export default class CreateUserValidator {
    */
   public schema = schema.create({
 
-    first_name: schema.string({ trim: true }, [rules.alpha(), rules.escape()]),
-    last_name: schema.string({ trim: true }, [rules.alpha(),rules.escape()]),
+    // user: schema.object().members({
 
-    email: schema.string({ trim: true }, [rules.email(), rules.escape(),
-    rules.normalizeEmail({
-      allLowercase: true,
-      gmailRemoveDots: false,
-    }), 
-    rules.unique({
-      table: 'users', column: 'email', caseInsensitive: true,
-      where: { is_deleted: false },
-    })]),
+      // first_name: schema.string({ trim: true }, [rules.alpha(), rules.escape()]),
+      // last_name: schema.string({ trim: true }, [rules.alpha(), rules.escape()]),
 
-    password: schema.string( [rules.minLength(6), rules.escape()],),
-    start_date: schema.string([rules.escape()]),
-    remember_me_token: schema.string.optional([rules.escape()]),
-    town: schema.string.optional({ trim: true }, [rules.alpha(),rules.escape()]),
-    country: schema.string.optional({ trim: true }, [rules.alpha(),rules.escape()]),
-    is_admin: schema.boolean.optional([rules.escape()]),
+      // email: schema.string({ trim: true }, [rules.email(), rules.escape(),
+      // rules.normalizeEmail({
+      //   allLowercase: true,
+      //   gmailRemoveDots: false,
+      // }),
+      // rules.unique({
+      //   table: 'users', column: 'email', caseInsensitive: true,
+      //   where: { is_deleted: false },
+      // })]),
 
-  })
+      // password: schema.string([rules.minLength(6), rules.escape()],),
+      // start_date: schema.string([rules.escape()]),
+      // remember_me_token: schema.string.optional([rules.escape()]),
+      // town: schema.string.optional({ trim: true }, [rules.alpha(), rules.escape()]),
+      // country: schema.string.optional({ trim: true }, [rules.alpha(), rules.escape()]),
+      // is_admin: schema.boolean.optional([rules.escape()]),
+
+    })
+  // })
+
 
 
   /**

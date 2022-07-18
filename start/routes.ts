@@ -30,11 +30,12 @@ Route.group(() => {
     Route.group(() => {
         Route.post('/new', 'UserController.new') 
         Route.post('/login', 'SecurityController.login')
-        Route.get('/login', 'SecurityController.session')
+        // Route.get('/login', 'SecurityController.session')
     }).prefix('/users')
     
     Route.group(()=> {    
         Route.get('/index', 'UserController.index')
+        Route.get('/me', 'UserController.me')
         Route.get('/get', 'UserController.getAllNotDeleted')
         Route.get('/:id', 'UserController.find')
         Route.put('/update/:id', 'UserController.update')
@@ -42,7 +43,9 @@ Route.group(() => {
         Route.delete('/soft-delete/:id', 'UserController.softDelete')
         Route.delete('/delete/:id', 'UserController.destroy')
         Route.get('/logout', 'SecurityController.logout')
-    }).prefix('/users').middleware('auth:api')
+     }).prefix('/users').middleware(['auth'])
+    // }).prefix('/users')
+
 
 
     Route.group(() => {
@@ -54,7 +57,6 @@ Route.group(() => {
         Route.put('/setAdmin/:id', 'ProjectController.setToAdmin')
         Route.delete('/soft-delete/:id', 'ProjectController.softDelete')
         Route.delete('/delete/:id', 'ProjectController.destroy')
-
     }).prefix('/projects')
 
 

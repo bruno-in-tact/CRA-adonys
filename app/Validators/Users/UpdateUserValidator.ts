@@ -2,7 +2,7 @@ import { schema, CustomMessages, rules, validator } from '@ioc:Adonis/Core/Valid
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class UpdateUserValidator {
-    public reporter = validator.reporters.api;
+  public reporter = validator.reporters.api;
 
   /*
    * Define schema to validate the "shape", "type", "formatting" and "integrity" of data.
@@ -23,27 +23,31 @@ export default class UpdateUserValidator {
    *     ])
    *    ```
    */
- 
-public schema = schema.create({
-  first_name: schema.string.optional({ trim: true }, [rules.alpha(), rules.escape()]),
-  last_name: schema.string.optional({ trim: true }, [rules.alpha(),rules.escape()]),
-  email: schema.string.optional({ trim: true }, [rules.email(), rules.escape(),
-  rules.normalizeEmail({
-    allLowercase: true,
-    gmailRemoveDots: false,
-  }), 
-  rules.unique({
-    table: 'users', column: 'email', caseInsensitive: true,
-    where: { is_deleted: false },
-  })]),
-  password: schema.string.optional( [rules.minLength(6), rules.escape()],),
-  start_date: schema.string.optional([rules.escape()]),
-  remember_me_token: schema.string.optional([rules.escape()]),
-  town: schema.string.optional({ trim: true }, [rules.alpha(),rules.escape()]),
-  country: schema.string.optional({ trim: true }, [rules.alpha(),rules.escape()]),
-  is_admin: schema.boolean.optional([rules.escape()]),
-  })
-  
+
+  public schema = schema.create({
+
+    // user: schema.object().members({
+
+      first_name: schema.string.optional({ trim: true }, [rules.alpha(), rules.escape()]),
+      last_name: schema.string.optional({ trim: true }, [rules.alpha(), rules.escape()]),
+      email: schema.string.optional({ trim: true }, [rules.email(), rules.escape(),
+      rules.normalizeEmail({
+        allLowercase: true,
+        gmailRemoveDots: false,
+      }),
+      rules.unique({
+        table: 'users', column: 'email', caseInsensitive: true,
+        where: { is_deleted: false },
+      })]),
+      password: schema.string.optional([rules.minLength(6), rules.escape()],),
+      start_date: schema.string.optional([rules.escape()]),
+      remember_me_token: schema.string.optional([rules.escape()]),
+      town: schema.string.optional({ trim: true }, [rules.alpha(), rules.escape()]),
+      country: schema.string.optional({ trim: true }, [rules.alpha(), rules.escape()]),
+      is_admin: schema.boolean.optional([rules.escape()]),
+    })
+  // })
+
 
   /**
    * Custom messages for validation failures. You can make use of dot notation `(.)`
@@ -56,7 +60,7 @@ public schema = schema.create({
    * }
    *
    */
-   public messages: CustomMessages = {
+  public messages: CustomMessages = {
     'required': "The field '{{field}}' is required",
     'email': "The field '{{field}}'  and with a correct format",
     'password.minLength': "The field '{{field}}' must have atleast 6 character and a Maj letter",

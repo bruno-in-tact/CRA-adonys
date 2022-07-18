@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@adonisjs/assembler": "^5.8.0",
+    "@faker-js/faker": "^7.3.0",
     "@japa/preset-adonis": "^1.1.0",
     "@japa/runner": "^2.0.9",
     "adonis-preset-ts": "^2.1.0",
@@ -60,6 +61,7 @@
     "@adonisjs/repl": "^3.1.11",
     "@adonisjs/session": "^4.0.6",
     "adonis-lucid-soft-deletes": "^1.4.3",
+    "japa": "^4.0.0",
     "luxon": "^2.4.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",

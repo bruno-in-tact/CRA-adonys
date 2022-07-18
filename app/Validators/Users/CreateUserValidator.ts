@@ -8,49 +8,29 @@ export default class CreateUserValidator {
 
   public reporter = validator.reporters.api;
 
-
-  /*
-   * Define schema to validate the "shape", "type", "formatting" and "integrity" of data.
-   *
-   * For example:
-   * 1. The username must be of data type string. But then also, it should
-   *    not contain special characters or numbers.
-   *    ```
-   *     schema.string({}, [ rules.alpha() ])
-   *    ```
-   *
-   * 2. The email must be of data type string, formatted as a valid
-   *    email. But also, not used by any other user.
-   *    ```
-   *     schema.string({}, [
-   *       rules.email(),
-   *       rules.unique({ table: 'users', column: 'email' }),
-   *     ])
-   *    ```
-   */
   public schema = schema.create({
 
     // user: schema.object().members({
 
-      // first_name: schema.string({ trim: true }, [rules.alpha(), rules.escape()]),
-      // last_name: schema.string({ trim: true }, [rules.alpha(), rules.escape()]),
+      first_name: schema.string({ trim: true }, [rules.escape()]),
+      last_name: schema.string({ trim: true }, [rules.escape()]),
 
-      // email: schema.string({ trim: true }, [rules.email(), rules.escape(),
-      // rules.normalizeEmail({
-      //   allLowercase: true,
-      //   gmailRemoveDots: false,
-      // }),
-      // rules.unique({
-      //   table: 'users', column: 'email', caseInsensitive: true,
-      //   where: { is_deleted: false },
-      // })]),
+      email: schema.string({ trim: true }, [rules.email(), rules.escape(),
+      rules.normalizeEmail({
+        allLowercase: true,
+        gmailRemoveDots: false,
+      }),
+      rules.unique({
+        table: 'users', column: 'email', caseInsensitive: true,
+        where: { is_deleted: false },
+      })]),
 
-      // password: schema.string([rules.minLength(6), rules.escape()],),
-      // start_date: schema.string([rules.escape()]),
-      // remember_me_token: schema.string.optional([rules.escape()]),
-      // town: schema.string.optional({ trim: true }, [rules.alpha(), rules.escape()]),
-      // country: schema.string.optional({ trim: true }, [rules.alpha(), rules.escape()]),
-      // is_admin: schema.boolean.optional([rules.escape()]),
+      password: schema.string([rules.minLength(6), rules.escape()],),
+      start_date: schema.string([rules.escape()]),
+      remember_me_token: schema.string.optional([rules.escape()]),
+      town: schema.string.optional({ trim: true }, [rules.escape()]),
+      country: schema.string.optional({ trim: true }, [rules.escape()]),
+      is_admin: schema.boolean.optional([rules.escape()]),
 
     })
   // })

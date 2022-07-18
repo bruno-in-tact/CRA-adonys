@@ -6,13 +6,13 @@ import User from 'App/Models/User'
 export const UserFactory = Factory.define(User, ({ faker }) => {
     return {
         first_name: faker.name.findName(),
-        last_name: faker.name.findName(),
-        email: faker.internet.email(),
-        password: faker.internet.password(),
-        start_date: faker.date.past(),
-        town: faker.random.word(),
-        country: faker.random.word(),
-        is_admin: 0
+      last_name: faker.name.findName(),
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+      start_date: "2021-10-08",
+      town: faker.random.word(),
+      country: faker.random.word(),
+      // is_admin: 0
 
         // "first_name" : "bruno",
         // "last_name" : "DURRANT",

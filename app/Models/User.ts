@@ -67,7 +67,7 @@ export default class User extends BaseModel {
     return this.query().where({ id, isDeleted: false }).first();
   }
   public static findAllNotDeleted() {
-    return this.query().where({  isDeleted: false });
+    return this.query().where({ isDeleted: false });
   }
   public static findNotDeletedByEmail(email: string) {
     return this.query().where({ email, isDeleted: false }).first();
@@ -84,6 +84,10 @@ export default class User extends BaseModel {
       }
     }
   }
-
-
+  //CASE INSENSITIVE LOGIN
+  public static findForAuth(uids: string[], uidValue: string) {
+    return this.query()
+      .where(query => uids.map(uid => query.orWhere(uid, 'ILIKE', uidValue)))
+      .firstOrFail()
+  }
 }

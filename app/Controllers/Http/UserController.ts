@@ -35,7 +35,6 @@ export default class UserController {
  */
   public async getAllNotDeleted({auth}: HttpContextContract) {
     const allNotDeleted = await User.findAllNotDeleted()
-    await auth.use('api').authenticate()
     return allNotDeleted
   }
 
@@ -44,10 +43,14 @@ export default class UserController {
  * Params: request, response
  */
   public async new({ request,response  }: HttpContextContract) {
-    const userPayLoad = await request.validate(CreateUserValidator)
-    console.log(userPayLoad)
-    const user = await User.create(userPayLoad)
-    return response.created({user})
+    console.log(JSON.stringify(request.body()))
+
+ 
+      const userPayLoad = await request.validate(CreateUserValidator)
+      const user = await User.create(userPayLoad)
+      console.log("user", user)
+      return user
+  
   }
 
   // public async new({ request, params }: HttpContextContract) {

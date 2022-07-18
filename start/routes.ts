@@ -1,4 +1,3 @@
-import { typeHttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 /*
 |--------------------------------------------------------------------------
 | Routes
@@ -20,12 +19,11 @@ import { typeHttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 */
 
 import Route from '@ioc:Adonis/Core/Route'
-import UserController from 'App/Controllers/Http/UserController';
 
 // Route.resource('/users', 'UserController')
 
 
-Route.group(() => {
+Route.group(() => { 
 
     Route.group(() => {
         Route.post('/new', 'UserController.new') 
@@ -43,8 +41,8 @@ Route.group(() => {
         Route.delete('/soft-delete/:id', 'UserController.softDelete')
         Route.delete('/delete/:id', 'UserController.destroy')
         Route.get('/logout', 'SecurityController.logout')
-     }).prefix('/users').middleware(['auth'])
-    // }).prefix('/users')
+    //  }).prefix('/users').middleware(['auth'])
+    }).prefix('/users')
 
 
 
@@ -54,10 +52,9 @@ Route.group(() => {
         Route.get('/get', 'ProjectController.getAllNotDeleted')
         Route.get('/:id', 'ProjectController.find')
         Route.put('/update/:id', 'ProjectController.update')
-        Route.put('/setAdmin/:id', 'ProjectController.setToAdmin')
         Route.delete('/soft-delete/:id', 'ProjectController.softDelete')
         Route.delete('/delete/:id', 'ProjectController.destroy')
-    }).prefix('/projects')
+    }).prefix('/projects').middleware(['auth'])
 
 
     Route.group(() => {
@@ -66,11 +63,10 @@ Route.group(() => {
         Route.get('/get', 'PlanningController.getAllNotDeleted')
         Route.get('/:id', 'PlanningController.find')
         Route.put('/update/:id', 'PlanningController.update')
-        Route.put('/setAdmin/:id', 'PlanningController.setToAdmin')
         Route.delete('/soft-delete/:id', 'PlanningController.softDelete')
         Route.delete('/delete/:id', 'PlanningController.destroy')
 
-    }).prefix('/plannings')
+    }).prefix('/plannings').middleware(['auth'])
 
 
     Route.group(() => {
@@ -82,6 +78,6 @@ Route.group(() => {
         Route.delete('/soft-delete/:id', 'UserProjectsController.softDelete')
         Route.delete('/delete/:id', 'UserProjectsController.destroy')
 
-    }).prefix('/usersProjects')
+    }).prefix('/usersProjects').middleware(['auth'])
 
 }).prefix('/api')
